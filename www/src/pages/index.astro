@@ -1,4 +1,5 @@
 ---
+import App from '../components/App';
 ---
 
 <html lang="en">
@@ -12,69 +13,15 @@
   </head>
   <body>
     <div id="tiles"></div>
-    <header class="centered">
-      <h1>Don't at any time consider</h1>
-      <p>a spiritual successor to neverthink</p>
-      <button>get started</button>
-    </header>
-    <script>
-      const wrapper = document.getElementById('tiles');
-
-      let columns = 0,
-        rows = 0;
-
-      const createTile = (index: number) => {
-        const tile = document.createElement('div');
-
-        tile.classList.add('tile');
-
-        tile.style.opacity = '1';
-
-        setInterval(() => {
-          const colors = [
-            '#AAF200',
-            '#00B4FF',
-            '#FF00B4',
-            '#FFB400',
-            '#B400FF',
-          ];
-          tile.style.backgroundColor = colors[Math.floor(Math.random() * 5)];
-        }, 100);
-
-        return tile;
-      };
-
-      const createTiles = (quantity: number) => {
-        Array.from(Array(quantity)).map((tile, index) => {
-          wrapper.appendChild(createTile(index));
-        });
-      };
-
-      const createGrid = () => {
-        wrapper.innerHTML = '';
-
-        const size = document.body.clientWidth > 800 ? 50 : 40;
-
-        columns = Math.floor(document.body.clientWidth / size);
-        rows = Math.floor(document.body.clientHeight / size);
-
-        wrapper.style.setProperty('--columns', columns);
-        wrapper.style.setProperty('--rows', rows);
-
-        createTiles(columns * rows);
-      };
-
-      createGrid();
-
-      window.onresize = () => createGrid();
-    </script>
+    <App client:load />
+    <script src='../scripts/tiles.js'></script>
   </body>
 </html>
 
-<style lang="scss">
+<style is:global lang="scss" >
   @import url('https://fonts.googleapis.com/css2?family=Kumar+One+Outline&display=swap');
 
-  header {
+  .main {
     color: white;
     font-family: monospace;
     padding: 2em;

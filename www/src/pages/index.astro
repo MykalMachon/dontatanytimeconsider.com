@@ -2,14 +2,108 @@
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>✋ Don't at any time consider</title>
-	</head>
-	<body>
-		<h1>Don't at any time consider</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>✋ Don't at any time consider</title>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <div id="tiles"></div>
+    <header class="centered">
+      <h1>Don't at any time consider</h1>
+      <p>a spiritual successor to neverthink</p>
+      <button>get started</button>
+    </header>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+    ></script>
+    <script>
+      const wrapper = document.getElementById('tiles');
+
+      let columns = 0,
+        rows = 0,
+        toggled = false;
+
+      const toggle = () => {
+        toggled = !toggled;
+
+        document.body.classList.toggle('toggled');
+      };
+
+      const handleOnClick = (index) => {
+        toggle();
+
+        anime({
+          targets: '.tile',
+          opacity: toggled ? 0 : 1,
+          delay: anime.stagger(50, {
+            grid: [columns, rows],
+            from: index,
+          }),
+        });
+      };
+
+      const createTile = (index: number) => {
+        const tile = document.createElement('div');
+
+        tile.classList.add('tile');
+
+        tile.style.opacity = toggled ? '0' : '1';
+
+        tile.onclick = (e) => handleOnClick(index);
+
+        return tile;
+      };
+
+      const createTiles = (quantity: number) => {
+        Array.from(Array(quantity)).map((tile, index) => {
+          wrapper.appendChild(createTile(index));
+        });
+      };
+
+      const createGrid = () => {
+        wrapper.innerHTML = '';
+
+        const size = document.body.clientWidth > 800 ? 100 : 50;
+
+        columns = Math.floor(document.body.clientWidth / size);
+        rows = Math.floor(document.body.clientHeight / size);
+
+        wrapper.style.setProperty('--columns', columns);
+        wrapper.style.setProperty('--rows', rows);
+
+        createTiles(columns * rows);
+      };
+
+      createGrid();
+
+      window.onresize = () => createGrid();
+    </script>
+  </body>
 </html>
+
+<style lang="scss">
+  header {
+    color: white !important;
+    font-family: monospace;
+    padding: 2em;
+    background: black;
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(120deg, var(--g1), var(--g2)) 1 1;
+  }
+
+  h1 {
+    font-size: 3em;
+  }
+
+  p, button {
+    font-size: 2em;
+    font-family: monospace;
+  }
+</style>

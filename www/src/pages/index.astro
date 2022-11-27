@@ -17,44 +17,29 @@
       <p>a spiritual successor to neverthink</p>
       <button>get started</button>
     </header>
-    <script
-      is:inline
-      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
-    ></script>
     <script>
       const wrapper = document.getElementById('tiles');
 
       let columns = 0,
-        rows = 0,
-        toggled = false;
-
-      const toggle = () => {
-        toggled = !toggled;
-
-        document.body.classList.toggle('toggled');
-      };
-
-      const handleOnClick = (index) => {
-        toggle();
-
-        anime({
-          targets: '.tile',
-          opacity: toggled ? 0 : 1,
-          delay: anime.stagger(50, {
-            grid: [columns, rows],
-            from: index,
-          }),
-        });
-      };
+        rows = 0;
 
       const createTile = (index: number) => {
         const tile = document.createElement('div');
 
         tile.classList.add('tile');
 
-        tile.style.opacity = toggled ? '0' : '1';
+        tile.style.opacity = '1';
 
-        tile.onclick = (e) => handleOnClick(index);
+        setInterval(() => {
+          const colors = [
+            '#AAF200',
+            '#00B4FF',
+            '#FF00B4',
+            '#FFB400',
+            '#B400FF',
+          ];
+          tile.style.backgroundColor = colors[Math.floor(Math.random() * 5)];
+        }, 100);
 
         return tile;
       };
@@ -68,7 +53,7 @@
       const createGrid = () => {
         wrapper.innerHTML = '';
 
-        const size = document.body.clientWidth > 800 ? 100 : 50;
+        const size = document.body.clientWidth > 800 ? 50 : 40;
 
         columns = Math.floor(document.body.clientWidth / size);
         rows = Math.floor(document.body.clientHeight / size);
@@ -87,22 +72,27 @@
 </html>
 
 <style lang="scss">
+  @import url('https://fonts.googleapis.com/css2?family=Kumar+One+Outline&display=swap');
+
   header {
-    color: white !important;
+    color: white;
     font-family: monospace;
     padding: 2em;
-    background: black;
-    border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
-    border-image: linear-gradient(120deg, var(--g1), var(--g2)) 1 1;
+    background: rgba(0,0,0,0.7);
+    // border-radius: 8px;
+    // border-width: 2px;
+    // border-style: solid;
+    // border-image: linear-gradient(120deg, var(--g1), var(--g2)) 1 1;
   }
 
   h1 {
     font-size: 3em;
+    font-family: 'Kumar One Outline', cursive;
+    opacity: 1;
   }
 
-  p, button {
+  p,
+  button {
     font-size: 2em;
     font-family: monospace;
   }
